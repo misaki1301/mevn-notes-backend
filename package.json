@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js",
-    "devBabel": "nodemon app.js --exec babel-node"
+    "devBabel": "nodemon app.js --exec babel-node",
+    "start": "babel-node app.js --exec"
   },
   "keywords": [],
   "author": "",
@@ -15,13 +16,13 @@
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
-  },
-  "devDependencies": {
+    "morgan": "^1.10.0",
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.1",
     "@babel/node": "^7.10.1",
-    "@babel/preset-env": "^7.10.1",
+    "@babel/preset-env": "^7.10.1"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.4"
   }
 }
