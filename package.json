@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js",
-    "devBabel": "nodemon app.js --exec babel-node",
+    "dev": "nodemon -r dotenv/config app.js",
+    "devBabel": "nodemon -r dotenv/config app.js --exec babel-node",
     "start": "babel-node app.js --exec"
   },
   "keywords": [],
@@ -17,13 +17,18 @@
     "@babel/core": "^7.10.1",
     "@babel/node": "^7.10.1",
     "@babel/preset-env": "^7.10.1",
+    "bcrypt": "^4.0.1",
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.16",
-    "morgan": "^1.10.0"
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.10.0",
+    "underscore": "^1.10.2"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.4"
   }
 }

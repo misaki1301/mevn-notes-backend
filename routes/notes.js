@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
+const {checkAuth, checkAdmin} = require('../middlewares/auth');
 //import the model of mongoose
 const nota = require("../models/nota");
 
-router.post("/notes", async function(req, res) {
+router.post("/notes", checkAuth, async function(req, res) {
 
     const body = req.body;
+
+    body.userId = req.user._id;
+
     try {
         const notaDB = await nota.create(body);
         res.status(200).json(notaDB);
@@ -20,9 +24,10 @@ router.post("/notes", async function(req, res) {
     }
 })
 
-router.get("/notes", async function(req, res) {
+router.get("/notes", checkAuth, async function(req, res) {
+    const userId = req.user._id
     try {
-        const notaDB = await nota.find();
+        const notaDB = await nota.find({userId});
         res.json(notaDB);
     } catch (error) {
         console.error(error);
@@ -34,7 +39,7 @@ router.get("/notes", async function(req, res) {
     }
 })
 
-router.put("/notes/:id", async function(req, res) {
+router.put("/notes/:id", checkAuth, async function(req, res) {
     const id = req.params.id;
     const body = req.body;
     try{
@@ -54,7 +59,7 @@ router.put("/notes/:id", async function(req, res) {
     }
 });
 
-router.delete("/notes/:id", async function(req, res){
+router.delete("/notes/:id", checkAuth, async function(req, res){
     const id = req.params.id;
     try {
         await nota.findByIdAndDelete(id, function(err, doc) {
@@ -82,7 +87,7 @@ router.delete("/notes/:id", async function(req, res){
     }
 });
 //get with params
-router.get("/notes/:id", async function(req, res) {
+router.get("/notes/:id", checkAuth, async function(req, res) {
     const id = req.params.id;
     try {
         const notaDB = await nota.findById(id);
