@@ -13,7 +13,11 @@ router.post("/notes", checkAuth, async function(req, res) {
 
     try {
         const notaDB = await nota.create(body);
-        res.status(200).json(notaDB);
+        res.status(200).json({
+            httpStatus: 200,
+            message: "success",
+            data: notaDB
+        });
     } catch(error) {
         console.error(error)
         return res.status(400).json({
@@ -24,7 +28,41 @@ router.post("/notes", checkAuth, async function(req, res) {
     }
 })
 
+
 router.get("/notes", checkAuth, async function(req, res) {
+    const limit = Number(req.query.limit) || 5;
+    let page = Number(req.query.page) || 1;
+    let skip = Number(req.query.skip) || 0;
+    console.log("SKIP",skip);
+    console.log("PAGE:", page);
+    skip = (limit - 1) * page; 
+    const userId = req.user._id;
+
+    try {
+        const notaDB = await nota.find({userId}).limit(limit).skip(skip);
+        const total = await nota.find({userId}).countDocuments()
+        let maxPages = Math.round(total / limit); 
+        res.json({
+            httpStatus: 200,
+            message: "success",
+            data: notaDB,
+            pagination: {
+                maxPages: maxPages,
+                currentPage: page,
+                totalElements: total
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(400).json({
+            httpStatus: 400,
+            message: "Error",
+            data: error
+        })
+    }
+})
+
+/*router.get("/notes", checkAuth, async function(req, res) {
     const userId = req.user._id
     try {
         const notaDB = await nota.find({userId});
@@ -37,7 +75,7 @@ router.get("/notes", checkAuth, async function(req, res) {
             data: error
         })
     }
-})
+})*/
 
 router.put("/notes/:id", checkAuth, async function(req, res) {
     const id = req.params.id;
