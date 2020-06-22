@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const checkAuth = (req, res, next) => {
     const token = req.get('token');
-    console.log(token);
+    //console.log(token);
     jwt.verify(token, 'secret',(err, decoded)=> {
         if(err) {
             return res.status(401).json({

@@ -31,26 +31,19 @@ router.post("/notes", checkAuth, async function(req, res) {
 
 router.get("/notes", checkAuth, async function(req, res) {
     const limit = Number(req.query.limit) || 5;
-    let page = Number(req.query.page) || 1;
     let skip = Number(req.query.skip) || 0;
-    console.log("SKIP",skip);
-    console.log("PAGE:", page);
-    skip = (limit - 1) * page; 
     const userId = req.user._id;
 
     try {
         const notaDB = await nota.find({userId}).limit(limit).skip(skip);
+        //count documents
         const total = await nota.find({userId}).countDocuments()
-        let maxPages = Math.round(total / limit); 
+        //let maxPages = Math.round(total / limit); 
         res.json({
             httpStatus: 200,
             message: "success",
             data: notaDB,
-            pagination: {
-                maxPages: maxPages,
-                currentPage: page,
-                totalElements: total
-            }
+            total: total
         });
     } catch (error) {
         console.error(error);
